@@ -1,0 +1,218 @@
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+
+            <title>test</title>
+            <style>
+                .contanier{
+                    width: 95%;
+                    border: lightgray solid 2px;
+
+
+                }
+                .welcome,.quizname,.time{
+
+                    width: 30%;
+                    height: 30px;
+
+                    display: inline-block;
+                     margin: 10px;
+                    padding: 7px;
+
+                }
+                .time{
+                    margin: 100px 0 0 0;
+
+                }
+                p{
+                    display: inline-block;
+                }
+                /*.clock{
+                    width: 120px;
+
+
+                    display: block;
+                   margin-top: 0;
+
+                }*/
+                #test,#test_status{
+                    width: 80%;
+                    border: solid 1px black;
+                    margin: auto;
+                    display: none;
+                }
+                #startbtn{
+                    display: block;
+                }
+            </style>
+            </head>
+            <body>
+            <div class="contanier">
+                <div class="welcome">
+                    <span>welcome:</span>
+                    <span id="name"></span>
+
+                </div>
+                <div class="quizname">
+                    <span>Quiz js</span>
+
+
+                </div>
+                <div class="time">
+                    <span>Exam Timer:
+                    <p id="days"></p>
+                     <p id="hours"></p>
+                     <p id="mins"></p>
+                     <p id="secs"></p>
+                     <p id="end"></p>
+                   </span>
+                </div>
+               <input type="button" value="start exam" id="startbtn">
+               <h2 id="test_status"></h2>
+               <div id="test"></div>
+            </div>
+            <script>
+            // The data/time we want to countdown to
+            var countDownDate = new Date("dec 22 2021 22:57:00").getTime();
+
+            // Run myfunc every second
+            var myfunc = setInterval(function() {
+
+            var now = new Date().getTime();
+            var timeleft = countDownDate - now;
+
+            var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+            document.getElementById("hours").innerHTML = hours + "h " 
+            document.getElementById("mins").innerHTML = minutes + "m " 
+            document.getElementById("secs").innerHTML = seconds + "s " 
+
+            // Display the message when countdown is over
+            if (timeleft < 0) {
+                clearInterval(myfunc);
+              
+                document.getElementById("hours").innerHTML = "" 
+                document.getElementById("mins").innerHTML = ""
+                document.getElementById("secs").innerHTML = ""
+                document.getElementById("end").innerHTML = "TIME UP!!";
+                stop()
+            }
+            }, 1000);
+            
+                var pos = 0;
+                var test=0;
+                var test_status=0;
+                var question=0;
+                var choice=0;
+                var choices=0;
+                var chA=0;
+                var chB=0;
+                var chC=0;
+                var correct = 0;
+
+
+            //declration exam quations
+            var questions=[
+                ["what is 10/2?", "3", "5", "115", "b"],
+                ["what is 10+2?", "3", "5", "12", "c"],
+                ["what is 2*4?", "3", "8", "115", "b"],
+                ["what is 2+4?", "3", "6", "115", "b"],
+                ["what is 1+2?", "3", "5", "115", "a"],
+                ["what is 1+4?", "3", "5", "115", "b"],
+                ["what is 12+5?", "3", "5", "15", "c"],
+                ["what is 1+3?", "3", "4", "115", "b"]    
+            ];
+
+                   window.addEventListener('load',function(){
+                        var uname=document.getElementById('name'); 
+                        var getgender=localStorage.getItem("gender") ;
+                    if (localStorage.getItem("gender")=="female") {
+                        document.bgColor="pink";
+                      }
+                    else{
+                        document.bgColor="blue";
+                     }
+
+                    var getname= localStorage.getItem("username");
+                    uname.innerHTML= getname;
+                        })
+                 var sbtn=document.getElementById("startbtn");
+                 sbtn.addEventListener('click',buildQuestion)
+
+                       function _(x){
+                  return document.getElementById(x);
+           }
+            function buildQuestion(){
+            document.getElementById("test").style.display="block";
+            document.getElementById("test_status").style.display="block"
+            test = _("test");
+            if(pos >= questions.length){
+                test.innerHTML = "<h2>You got "+correct+" of "+(questions.length)*20+" questions correct</h2>";
+                _("test_status").innerHTML = "Test Completed";
+                pos = 0;
+                correct = 0;
+                return false;
+            }
+            _("test_status").innerHTML = "Question "+(pos+1)+" of "+questions.length;
+            question = questions[pos][0];
+            chA = questions[pos][1];
+            chB = questions[pos][2];
+            chC = questions[pos][3];
+            chD = questions[pos][4];
+            test.innerHTML = "<h3>"+question+"</h3>";
+            test.innerHTML += "<input type='radio' id='radio1' name='choices' required value='A'> "+chA+"<br>";
+            test.innerHTML += "<input type='radio' id='radio2' name='choices' required value='B'> "+chB+"<br>";
+            test.innerHTML += "<input type='radio' id='radio3' name='choices' required value='C'> "+chC+"<br><br>";
+            test.innerHTML += "<input type='radio' id='radio4' name='choices' required value='D'> "+chD+"<br><br>";
+
+            test.innerHTML += "<input type='button'  id='nextbtn' value='next quation'/>";
+            test.innerHTML += "<input type='button' onclick='stop()'  id='finshbtn' value='finsh exam' style: float:'right'/>";
+
+            nbtn= document.getElementById('nextbtn');
+            rd1=document.getElementById("radio1");
+            rd2=document.getElementById("radio2");
+            rd3=document.getElementById("radio3");
+            rd4=document.getElementById("radio4");
+                
+            nbtn.addEventListener('click',function(e){
+            if (!(rd1.checked||rd2.checked||rd3.checked||rd4.checked)) {
+              e.preventDefault();
+              alert("you dont answer quistions!!!")  
+            }
+            else{
+                checkAnswer()
+            }
+            })
+
+            }
+
+
+            function checkAnswer(){
+            choices = document.getElementsByName("choices");
+            for(var i=0; i<choices.length; i++){
+                if(choices[i].checked){
+                    choice = choices[i].value;
+                    console.log(choice)
+                }
+            }
+            if(choice == questions[pos][5]){
+                correct=correct+20;
+            }
+            pos++;
+           buildQuestion();
+            }
+            function stop(){
+            checkAnswer();
+            sbtn.style.display="none";
+            ("test_status").innerHTML = "Test finshed";
+
+            test.innerHTML = "<h2>You got "+correct+" of "+(questions.length)*20+" questions correct</h2>";
+
+            }     
+            //end of load     
+
+            </script>
+            </body>
+            </html>

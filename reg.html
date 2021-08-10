@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration</title>
+  <style>
+    #container{
+    border: 2px solid black ;
+    margin: 50px auto;
+    width: 400px;
+    padding : 15px;
+    background-color:blueviolet;
+}
+
+  h2{
+      text-align: center;
+      color: red;
+  }
+
+  form{
+    margin:0 20px ;
+}
+    span {
+      display:none;
+      color: red;
+    }
+
+    input[type="text"] ,input[type="password"] ,input[type="email"]{
+    width: 200px;
+    margin: 5px;
+    height: 25px;
+}
+
+   input[type="submit"],input[type="reset"]{
+    width:100px;
+    margin:10px;
+    height: 30px;
+    border-radius: 3px;
+    color:red;
+    background-color:darkgray;
+}
+  input[value="Cancel"]{
+    margin-left: 80px;
+}
+   
+ 
+    .error{
+      border: 3px solid red;
+    }
+    .success{
+      border: 3px solid green;
+    }
+  
+  </style>
+  <script>
+    window.addEventListener('load', function(){
+      //inputs
+     var username = document.getElementById('username');
+     var userpass = document.getElementById('userpass');
+     var useremail = document.getElementById('useremail');
+     var confirmpass = document.getElementById('confirmpass');
+      username.focus();
+      //span error message
+      var usernameerror = document.getElementById('usernameerror');
+      var userpasserror = document.getElementById('userpasserror');
+      var useremailerror = document.getElementById('useremailerror');
+      var confirmpasserror = document.getElementById('confirmpasserror');
+
+
+      //validate username 
+      username.addEventListener('blur', function(){
+        if (!isusernamevalid()) {
+          username.focus();
+          username.select();
+          usernameerror.style.display = "block";
+          username.className = "error";
+        } else {
+          usernameerror.style.display = "none";
+          username.className = "success";
+          userpass.focus();
+        }
+      });//end of username check
+
+      userpass.addEventListener('blur', function(){
+        if (!isuserpassvalid()) {
+          userpass.focus();
+          userpass.select();
+          userpasserror.style.display = "block";
+          userpass.className = "error";
+        } else {
+          userpasserror.style.display = "none";
+          userpass.className = "success";
+          confirmpass.focus();
+        }
+      });//end of userpass check
+
+      confirmpass.addEventListener('blur', function(){
+        if (!isconfirmpassvalid()) {
+          confirmpass.focus();
+          confirmpass.select();
+          confirmpasserror.style.display = "block";
+          confirmpass.className = "error";
+        } else {
+          confirmpasserror.style.display = "none";
+          confirmpass.className = "success";
+          useremail.focus();
+        }
+      });//end of userpassconfirm check
+      
+      useremail.addEventListener('blur', function(){
+        if (!isuseremailvalid()) {
+          useremail.focus();
+          useremail.select();
+          useremailerror.style.display = "block";
+          useremail.className = "error";
+        } else {
+          useremailerror.style.display = "none";
+          useremail.className = "success";
+
+        }
+      });//end of useremail check\
+
+
+      // register submit and reset events with form
+        document.forms[0].addEventListener("submit", function(e){
+          if(!(isusernamevalid() && isuserpassvalid() && isuseremailvalid() && isconfirmpassvalid() && (male.checked == true || female.checked == true))){
+            alert("Sorry You Can't Submit Please Complete First");
+            e.preventDefault();
+          } else {
+            localStorage.setItem("username",username.value);
+            localStorage.setItem("userpass", userpass.value);
+            localStorage.setItem("gender" , gender.value);
+          }
+        }); // end of submit
+
+        document.forms[0].addEventListener("reset", function(e){
+          if(!confirm("Are You Sure To Reset !?")){
+            e.preventDefault();
+        }else{
+          username.focus();
+        }
+        }); // end of submit
+
+
+    });//end of load event
+    
+    function isusernamevalid() {
+      var usernamepattern = /^[a-zA-Z]{6,8}$/;
+      if(username.value.match(usernamepattern)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    function isuserpassvalid() {
+      var userpasspattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      if(userpass.value.match(userpasspattern)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function isconfirmpassvalid() {
+      if(userpass.value == confirmpass.value) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function isuseremailvalid (){
+      var useremailpattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      if(useremail.value.match(useremailpattern)){
+        return true;
+      }else {
+        return false;
+      }
+    }
+
+
+
+  </script>
+</head>
+<body>
+  <div id="container">
+    <h2>Registration</h2>
+    <form action="Login.html" method="GET">
+      <table>
+        <!-- username -->
+        <tr>
+          <td rowspan="2">UserName</td>
+          <td><input type="text" id="username"></td>
+        </tr>
+        <tr>
+          <td><span id="usernameerror">Username Must Be Letters Only Between 6 and 8</span></td>
+        </tr>
+
+        <!-- userpass -->
+        <tr>
+          <td rowspan="2">UserPass</td>
+          <td><input type="password" id="userpass"></td>
+        </tr>
+        <tr>
+          <td><span id="userpasserror"> Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</span></td>
+        </tr>
+
+        <!-- confirmpass -->
+        <tr>
+          <td rowspan="2">ConfirmPass</td>
+          <td><input type="password" id="confirmpass"></td>
+        </tr>
+        <tr>
+          <td><span id="confirmpasserror">Make Sure You Entered The Same Password</span></td>
+        </tr>
+
+        <!-- useremail -->
+        <tr>
+          <td rowspan="2">UserEmail</td>
+          <td><input type="text" id="useremail"></td>
+        </tr>
+        <tr>
+          <td><span id="useremailerror">UserEmail Must Be Valid like ab@cd.com</span></td>
+        </tr>
+
+        <tr>
+          <td rowspan="2">Gender</td>
+          <td>
+              <input type="radio" name="gender" id="male" value="male" > Male
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <input type="radio" name="gender" value="female" id="female" checked> Female
+          </td>
+      </tr>
+
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="Ok">
+            <input type="reset" value="Cancel">
+          </td>
+          
+        </tr>
+      </table>
+
+    </form>
+  </div>
+</body>
+</html>

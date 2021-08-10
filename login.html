@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    #container{
+    border: 2px solid black ;
+    margin: 50px auto;
+    width: 350px;
+    padding : 15px;
+    background-color: #eee;
+}
+
+  h2{
+        text-align: center;
+        color: red;
+    }
+  form{
+      margin:0 20px ;
+  }
+
+  span {
+      display:none;
+      color: red;
+    }
+    input[type="text"] ,input[type="password"] {
+    width: 200px;
+    margin: 5px;
+    height: 25px;
+}
+
+input[type="submit"],input[type="reset"]{
+    width:70px;
+    margin:10px;
+    height: 30px;
+    border-radius: 3px;
+    color:red;
+    background-color: azure;
+}
+
+input[value="Cancel"]{
+    margin-left: 80px;
+}
+
+.error{
+      border: 3px solid red;
+    }
+    .success{
+      border: 3px solid green;
+    }
+
+  </style>
+  <script>
+    window.addEventListener('load', function(){
+      var username = document.getElementById("username");
+      var userpass = document.getElementById("userpass");
+      username.focus();
+      var usernameerror = document.getElementById("usernameerror");
+      var userpasserror = document.getElementById("userpasserror");
+
+      // get username and userpass from localStorage
+      var localusername = localStorage.getItem("username");
+      var localuserpass = localStorage.getItem("userpass");
+       var localusergender=localStorage.getItem("gender")
+      //validate username
+      username.addEventListener("blur", function(){
+        if(!isusernamevalid()){
+          username.focus();
+          username.select();
+          usernameerror.style.display="block";
+          username.className="error";
+        } else {
+          usernameerror.style.display="none";
+          username.className="success";
+          userpass.focus();
+        }
+      }); // end of username check
+
+      userpass.addEventListener('blur', function(){
+        if (!isuserpassvalid()) {
+          userpass.focus();
+          userpass.select();
+          userpasserror.style.display = "block";
+          userpass.className = "error";
+        } else {
+          userpasserror.style.display = "none";
+          userpass.className = "success";
+          confirmpass.focus();
+        }
+      });//end of userpass check
+
+         // register submit and reset events with form
+         document.forms[0].addEventListener("submit", function(e){
+          if(!(isusernamevalid() && isuserpassvalid())){
+            alert("Sorry You Can't Submit Please Complete First");
+            e.preventDefault();
+          } 
+        }); // end of submit
+
+        document.forms[0].addEventListener("reset", function(e){
+          if(!confirm("Are You Sure To Reset !?")){
+            e.preventDefault();
+        }else{
+          username.focus();
+        }
+        }); // end of submit
+         function isusernamevalid(){
+      if(username.value == localusername){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function isuserpassvalid(){
+      if(userpass.value == localpassname){
+        return true;
+      } else {
+        return false;
+      }
+    }
+    });
+
+
+   
+
+  </script>
+</head>
+<body>
+  <div id="container">
+    <h2>Login</h2>
+    <form method="GET" action="Quiz.html">
+      <table>
+        <tr>
+             <!-- username -->
+        <tr>
+          <td rowspan="2">UserName</td>
+          <td><input type="text" id="username"></td>
+        </tr>
+        <tr>
+          <td><span id="usernameerror">Username Must Be Letters Only Between 6 and 8</span></td>
+        </tr>
+        
+        <!-- userpass -->
+        <tr>
+          <td rowspan="2">UserPass</td>
+          <td><input type="password" id="userpass"></td>
+        </tr>
+        <tr>
+          <td><span id="userpasserror"> Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</span></td>
+        </tr>
+        <!-- submit -->
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="Ok">
+            <input type="reset" value="Cancel">
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</body>
+</html>
